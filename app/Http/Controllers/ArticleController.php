@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class ArticleController extends Controller
 {
+    //Affiche l'interface d'acceuil
     public function index():View    {
 
         $articles = Article::latest()->paginate(5);
@@ -18,18 +19,20 @@ class ArticleController extends Controller
         ]);
     }
 
+    //Affiche le contenu d'un seul article en détaille
     public function show(Article $art):View     {
         return view("article.show", [
             "art" => $art
         ]);
     }
 
+    //Affiche le formulaire de création d'un article
     public function create():View   {
         return view("article.create");
     }
 
 
-
+    //Gère l'enregistrement d'un article
     public function store(Request $request) {
         // Validation des données
         $request->validate([
@@ -66,14 +69,14 @@ class ArticleController extends Controller
         }
     }
 
-
+    //Affiche le formulaire de modification
     public function modify(Article $art):View   {
         return view("article.modify" , [
             "art" => $art
         ]);
     }
 
-
+    //Gère la modification d'un article
     public function upgrade(Request $request ,Article $art) {
          // Validation des données
          $request->validate([
@@ -102,13 +105,14 @@ class ArticleController extends Controller
         }
     }
 
+    //Gère la suppression d'un article
     public function destroy(Article $art) {
         try {
-            //code...
+            
             $article = Article::findOrFail($art->id);
             $article->delete();
             return redirect()->route('Index')->with('success', 'Article supprimé avec succès !');
-            
+
         } catch (\Exception $e) {
             Log::error('Erreur lors de la mise à jour de l\'article : ' . $e->getMessage());
             return redirect()->back()->with('error', 'Erreur lors de la suppression de l\'article : ' . $e->getMessage());

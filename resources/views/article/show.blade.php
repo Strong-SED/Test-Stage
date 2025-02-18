@@ -31,12 +31,7 @@
 
             {{-- Navigation --}}
             <nav class=" flex justify-between items-center ">
-                <a href="{{ route("article.create") }}" class="flex items-center font-bold text-orange-700 text-lg rounded-full px-4 py-4 bg-slate-300 hover:scale-105 hover:bg-slate-50 transition-all">
-                    Ajouter
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6 text-orange-700 font-bold ml-2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-                      </svg>
-                </a>
+                
 
                 <a href="{{ route("Index") }}" class="flex items-center font-bold text-orange-700 text-lg rounded-full p-4 bg-slate-300 hover:scale-105 hover:bg-slate-50 transition-all duration-700 ml-3">
                     Acceuil
@@ -71,24 +66,6 @@
 
                         <h2 class="text-2xl font-bold">Instruction</h2>
                         <p class="text-justify text-xl">{{ $art->instruction }}</p>
-
-                        <form
-                            action="{{ route("destroy" , ['art'=>$art]) }}"
-                            method="post"
-                            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
-                            @csrf
-                            @method("DELETE")
-
-                            <button
-                                class="hover:scale-110 transition-all duration-700 lg:absolute lg:bottom-2 lg:right-2"
-                                type="submit"
-                                >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 w-10 h-10 text-orange-700 font-bold">
-                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
-                                  </svg>
-
-                                </button>
-                        </form>
 
                     </div>
                 </article>

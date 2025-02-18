@@ -19,3 +19,5 @@ Route::put('/modifyArt{art}' , [ArticleController::class , "upgrade"])->name("up
 
 Route::delete('destroyArticle/{art}', [ArticleController::class , 'destroy'])->name("destroy");
 
+
+
