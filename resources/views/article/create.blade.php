@@ -37,21 +37,22 @@
                         <path d="M5.223 2.25c-.497 0-.974.198-1.325.55l-1.3 1.298A3.75 3.75 0 0 0 7.5 9.75c.627.47 1.406.75 2.25.75.844 0 1.624-.28 2.25-.75.626.47 1.406.75 2.25.75.844 0 1.623-.28 2.25-.75a3.75 3.75 0 0 0 4.902-5.652l-1.3-1.299a1.875 1.875 0 0 0-1.325-.549H5.223Z" />
                         <path fill-rule="evenodd" d="M3 20.25v-8.755c1.42.674 3.08.673 4.5 0A5.234 5.234 0 0 0 9.75 12c.804 0 1.568-.182 2.25-.506a5.234 5.234 0 0 0 2.25.506c.804 0 1.567-.182 2.25-.506 1.42.674 3.08.675 4.5.001v8.755h.75a.75.75 0 0 1 0 1.5H2.25a.75.75 0 0 1 0-1.5H3Zm3-6a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75v-3Zm8.25-.75a.75.75 0 0 0-.75.75v5.25c0 .414.336.75.75.75h3a.75.75 0 0 0 .75-.75v-5.25a.75.75 0 0 0-.75-.75h-3Z" clip-rule="evenodd" />
                       </svg>
-                      
+
                 </a>
 
             </nav>
         </header>
 
         {{-- Corps de la page avec les articles --}}
-        <main class="py-5 px-5 rounded-md  max-w-6xl mx-auto ">
-            <div class="w-full h-auto px-5 py-2  ">
-                <form 
-                    action="{{ route("store") }}" 
-                    method="post" 
+        <main class="py-5 lg:px-5 px-1 rounded-md  lg:max-w-6xl mx-auto ">
+            <div class="w-full h-auto lg:px-5 px-1 py-2  ">
+                <form
+                    action="{{ route("store") }}"
+                    method="post"
                     x-data = "{show : true}"
+                    enctype="multipart/form-data"
                     x-init = "setTimeout(() => show = false, 3000)"
-                    class="flex flex-col w-full max-w-4xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-lg">
+                    class="flex flex-col w-full lg:max-w-4xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 lg:p-8 shadow-lg">
                     @csrf
 
                     @if (session("success"))
@@ -72,45 +73,71 @@
                     </template>
                     @endif
 
-                    
+
+
+
+
+                    @if ($errors->has('image'))
+                        <template x-if="show" >
+                            <div x-cloak class="text-slate-50 bg-red-700 rounded-full p-3 ">{{ $errors->first('image') }}</div>
+                        </template>
+                    @elseif ($errors->has('required'))
+                        <template x-if="show" x-cloak>
+                            <div x-cloak class="text-slate-50 bg-red-700 rounded-full p-3 ">{{ $errors->first('required') }}</div>
+                        </template>
+                    @endif
+
+
                     <h1 class="text-slate-100 text-4xl font-bold text-center py-6 hover:animate-pulse duration-700 ease-in-out">
                         Ajouter un article
                     </h1>
-                    
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                         <!-- Champs à gauche -->
                         <div class="space-y-6">
                             <div class="flex flex-col">
                                 <label for="titre" class="text-orange-700 text-xl font-bold mb-2">Titre :</label>
-                                <input type="text" name="titre" id="titre" 
+                                <input type="text" name="titre" id="titre"
                                     placeholder="Donnez un titre à l'article..."
                                     class="w-full outline-none rounded-full h-12 text-slate-950 px-6 text-lg border border-gray-300 focus:ring-2 focus:ring-orange-700">
                             </div>
-                            
+
                             <div class="flex flex-col">
                                 <label for="description" class="text-orange-700 text-xl font-bold mb-2">Description :</label>
-                                <input type="text" name="description" id="description" 
+                                <input type="text" name="description" id="description"
                                     placeholder="Décrivez votre article ici..."
                                     class="w-full outline-none rounded-full h-12 text-slate-950 px-6 text-lg border border-gray-300 focus:ring-2 focus:ring-orange-700">
                             </div>
-                            
+
                             <div class="flex flex-col">
                                 <label for="instruction" class="text-orange-700 text-xl font-bold mb-2">Instruction :</label>
-                                <input type="text" name="instruction" id="instruction" 
+                                <input type="text" name="instruction" id="instruction"
                                     placeholder="Des instructions ?..."
                                     class="w-full outline-none rounded-full h-12 text-slate-950 px-6 text-lg border border-gray-300 focus:ring-2 focus:ring-orange-700">
                             </div>
+
+                            <!-- Input pour l'upload d'image -->
+                            <div class="flex flex-col">
+                                <label for="image" class="text-orange-700 text-xl font-bold mb-2">Image :</label>
+                                <input type="file" name="image" id="image"
+                                    placeholder="Choisis une image..."
+                                    accept=".jgp,.jpeg,.png"
+                                    class="w-full outline-none bg-slate-50 text-base rounded-2xl text-slate-950 px-6 py-4 border border-gray-300 focus:ring-2 focus:ring-orange-700 resize-none">
+                            </div>
                         </div>
-                        
+
                         <!-- Textearea Contexte à droite -->
                         <div class="flex flex-col">
                             <label for="context" class="text-orange-700 text-xl font-bold mb-2">Contexte :</label>
-                            <textarea name="context" id="context" rows="9"
+                            <textarea name="context" id="context" rows="12"
                                 placeholder="Ajoutez un contexte ici..."
                                 class="w-full outline-none rounded-2xl text-slate-950 px-6 py-4 text-lg border border-gray-300 focus:ring-2 focus:ring-orange-700 resize-none"></textarea>
                         </div>
+
+
+
                     </div>
-                    
+
                     <!-- Bouton d'enregistrement -->
                     <div class="flex justify-center mt-8">
                         <button class="bg-orange-700 font-extrabold text-xl px-6 py-3 rounded-full hover:bg-slate-50 hover:text-orange-700 hover:scale-105 transition-all duration-700">

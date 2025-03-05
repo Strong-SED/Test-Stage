@@ -11,9 +11,10 @@ class Layout extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(public string $titre = "")
     {
         //
+        $this->titre = config("app.name"). ($titre ? " | $titre " : " ");
     }
 
     /**
@@ -21,7 +22,7 @@ class Layout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layout');
+        return view('layouts.default');
     }
 }
 

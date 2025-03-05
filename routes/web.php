@@ -1,23 +1,51 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ArticleController::class , 'index'])-> name('Index');
+require __DIR__.'/auth.php';
 
-Route::get("/{art}" , [ArticleController::class , "show"])->name("show");
+// Redirection vers la page de connexion
+Route::get('/', function () {
+    return redirect('/login');
+});
 
+// Dashboard protégé par l'authentification et la vérification email
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
+// Routes nécessitant l'authentification
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::post('/createArt', [ArticleController::class, 'store'])->name('store');
+    // 🔹 Routes pour le profil utilisateur
+    Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+        Route::get('/', 'edit')->name('profile.edit');
+        Route::patch('/', 'update')->name('profile.update');
+        Route::delete('/', 'destroy')->name('profile.destroy');
+    });
 
+    // 🔹 Routes pour la gestion des articles
+    Route::prefix('article')->controller(ArticleController::class)->group(function () {
+        Route::get('/create', 'create')->name('article.create');
+        Route::get('/modify/{art}', 'modify')->name('article.modify');
+        Route::post('/pdf/{art}', 'PDFView')->name('pdfView');
+    });
 
-Route::get('/article/modify/{art}' , [ArticleController::class , "modify"])->name("article.modify");
+    // 🔹 Routes CRUD pour les articles
+    Route::controller(ArticleController::class)->group(function () {
+        Route::get('/', 'index')->name('Index');
+        Route::get("/{art}", "show")->name("show");
+        Route::post('/createArt', 'store')->name('store');
+        Route::put('/modifyArt/{art}', "upgrade")->name("upgrade");
+        Route::delete('/destroyArticle/{art}', 'destroy')->name("destroy");
+    });
 
-Route::put('/modifyArt{art}' , [ArticleController::class , "upgrade"])->name("upgrade");
+    // 🔹 Scanner QR Code
+    Route::get('/scanner', [ArticleController::class, 'qrscan'])->name('scanner');
 
-Route::delete('destroyArticle/{art}', [ArticleController::class , 'destroy'])->name("destroy");
-
-
-
+    // 🔹 Route pour la déconnexion
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
