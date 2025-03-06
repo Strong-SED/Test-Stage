@@ -92,6 +92,8 @@
                         Ajouter un article
                     </h1>
 
+                    <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                         <!-- Champs à gauche -->
                         <div class="space-y-6">

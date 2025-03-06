@@ -15,7 +15,8 @@ class Article extends Model
         'context',
         'instruction',
         'image',
+        'user_id',
     ];
-    
+
     use HasFactory;
 }

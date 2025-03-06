@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('article')->controller(ArticleController::class)->group(function () {
         Route::get('/create', 'create')->name('article.create');
         Route::get('/modify/{art}', 'modify')->name('article.modify');
-        Route::post('/pdf/{art}', 'PDFView')->name('pdfView');
+        Route::get('/pdf/{art}', 'PDFView')->name('pdfView');
     });
 
     // 🔹 Routes CRUD pour les articles
@@ -43,9 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/destroyArticle/{art}', 'destroy')->name("destroy");
     });
 
-    // 🔹 Scanner QR Code
-    Route::get('/scanner', [ArticleController::class, 'qrscan'])->name('scanner');
+
 
     // 🔹 Route pour la déconnexion
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
+// 🔹 Scanner QR Code
+Route::get('/scanner/{art}', [ArticleController::class, 'qrscan'])->name('scanner');

@@ -45,7 +45,8 @@ class ArticleController extends Controller
             'description' => 'required|string',
             'context' => 'required|string',
             'instruction' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'user_id' => 'required|string',
         ], [
            'required' => 'Veuillez remplir tous les champs obligatoires.',
            'image' => 'Veuillez fournir une image valide (jpeg, png, jpg) de 2MB max.'
@@ -77,7 +78,8 @@ class ArticleController extends Controller
                 "description" => $request->description,
                 "context" => $request->context,
                 "instruction" => $request->instruction,
-                "image" => $image
+                "image" => $image,
+                "user_id" => $request->user_id
             ]);
 
             // Redirection vers la vue avec les données de l'article
@@ -156,9 +158,11 @@ class ArticleController extends Controller
         return view("article.pdf" , compact("art"));
     }
 
-    public function qrscan(){
+    public function qrscan() {
         return view("article.qrscanner");
     }
 }
+
+
 
 
