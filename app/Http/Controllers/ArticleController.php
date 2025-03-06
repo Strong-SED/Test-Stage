@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ArticleController extends Controller
 {
     //Affiche l'interface d'acceuil
-    public function index():View    {
+    public function index()    {
         $articles = Article::latest()->paginate(5);
         //Génération de Qrcode pour un article... dependances composer require simplesoftwareio/simple-qrcode
         foreach($articles as $art){
@@ -23,7 +23,7 @@ class ArticleController extends Controller
     }
 
     //Affiche le contenu d'un seul article en détaille
-    public function show(Article $art):View     {
+    public function show(Article $art)   {
 
         $art["image_url"] = public_path('images/' . $art->image);
         return view("article.show", [
@@ -32,7 +32,7 @@ class ArticleController extends Controller
     }
 
     //Affiche le formulaire de création d'un article
-    public function create():View   {
+    public function create()  {
         return view("article.create");
     }
 
@@ -93,7 +93,7 @@ class ArticleController extends Controller
     }
 
     //Affiche le formulaire de modification
-    public function modify(Article $art):View   {
+    public function modify(Article $art)  {
         return view("article.modify" , [
             "art" => $art
         ]);
@@ -158,7 +158,7 @@ class ArticleController extends Controller
         return view("article.pdf" , compact("art"));
     }
 
-    public function qrscan() {
+    public function scanner(){
         return view("article.qrscanner");
     }
 }

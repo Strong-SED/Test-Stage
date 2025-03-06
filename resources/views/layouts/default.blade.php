@@ -91,7 +91,7 @@
 
                 <a
                     x-transition.duration.800ms
-                    href="{{ route("scanner" ) }}"
+                    href="{{ route('scan') }}"
                     class="inline-flex font-bold text-orange-700 p-4 rounded-full bg-slate-300 hover:bg-slate-50 hover:scale-110 transition-all duration-700 lg:w-full mx-3 lg:mx-0">
                     <span class="inline-flex">Scanner</span>
                     <svg
